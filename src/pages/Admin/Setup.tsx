@@ -109,6 +109,10 @@ export default function AdminSetup() {
               {loading ? 'Creating Admin...' : 'Create Admin Account'}
             </Button>
           </form>
+          
+          <div className="mt-6 text-center text-sm text-muted-foreground">
+            Already have an admin account? <a href="/admin/login" className="text-brand-blue hover:underline">Sign in here</a>
+          </div>
         </CardContent>
       </Card>
     </div>

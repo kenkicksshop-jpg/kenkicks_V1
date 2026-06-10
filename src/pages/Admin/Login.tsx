@@ -13,7 +13,7 @@ export default function AdminLogin() {
   const [passcode, setPasscode] = useState('');
   const [loading, setLoading] = useState(false);
   const [attemptingRedirect, setAttemptingRedirect] = useState(false);
-  const { loginWithEmail, isAdmin } = useAuth();
+  const { loginWithEmail, resetPassword, isAdmin } = useAuth();
   const navigate = useNavigate();
 
   // Watch for successful admin authentication
@@ -50,6 +50,21 @@ export default function AdminLogin() {
       toast.error("An unexpected error occurred.");
       setLoading(false);
     }
+  };
+
+  const handleResetPassword = async () => {
+    if (!email) {
+      toast.error("Please enter your admin email first to reset your password.");
+      return;
+    }
+    setLoading(true);
+    const { error } = await resetPassword(email);
+    if (error) {
+      toast.error(error.message || "Failed to send reset email.");
+    } else {
+      toast.success("Password reset email sent! Check your inbox.");
+    }
+    setLoading(false);
   };
 
   return (
@@ -104,6 +119,20 @@ export default function AdminLogin() {
               {loading ? 'Authenticating...' : 'Sign In as Admin'}
             </Button>
           </form>
+          
+          <div className="mt-4 flex flex-col items-center space-y-4 text-sm">
+            <button 
+              type="button" 
+              onClick={handleResetPassword}
+              disabled={loading}
+              className="text-brand-blue hover:underline"
+            >
+              Forgot Password?
+            </button>
+            <div className="text-muted-foreground">
+              Don't have an admin account? <a href="/admin/setup" className="text-brand-blue hover:underline">Set up here</a>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>

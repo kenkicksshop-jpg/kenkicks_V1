@@ -10,6 +10,7 @@ interface AuthContextType {
   loading: boolean;
   login: () => Promise<void>;
   loginWithEmail: (email: string, passcode: string) => Promise<{ error: any }>;
+  resetPassword: (email: string) => Promise<{ error: any }>;
   logout: () => Promise<void>;
 }
 
@@ -102,6 +103,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return { error };
   };
 
+  const resetPassword = async (email: string) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/admin/login`,
+    });
+    return { error };
+  };
+
   const login = async () => {
     // Redirect to admin login page instead of using OAuth
     window.location.href = '/admin/login';
@@ -112,7 +120,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAdmin, loading, login, loginWithEmail, logout }}>
+    <AuthContext.Provider value={{ user, isAdmin, loading, login, loginWithEmail, resetPassword, logout }}>
       {!loading && children}
     </AuthContext.Provider>
   );
