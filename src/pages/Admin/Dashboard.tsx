@@ -17,7 +17,8 @@ import {
   RefreshCw,
   Search,
   UserPlus,
-  ArrowUpDown
+  ArrowUpDown,
+  Shield
 } from 'lucide-react';
 import { format } from 'date-fns';
 
@@ -32,7 +33,7 @@ type Product = {
   created_at: string;
 };
 
-type TabType = 'products' | 'orders' | 'admins';
+type TabType = 'products' | 'orders' | 'admins' | 'security';
 
 export default function AdminDashboard() {
   const [loading, setLoading] = useState(false);
@@ -63,6 +64,11 @@ export default function AdminDashboard() {
     email: '',
     password: ''
   });
+
+  // Security state
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [changingPassword, setChangingPassword] = useState(false);
 
   useEffect(() => {
     fetchProducts();
@@ -240,6 +246,30 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newPassword !== confirmNewPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+    if (newPassword.length < 8) {
+      toast.error("Password must be at least 8 characters");
+      return;
+    }
+    setChangingPassword(true);
+    try {
+      const { error } = await supabase.auth.updateUser({ password: newPassword });
+      if (error) throw error;
+      toast.success("Password updated successfully!");
+      setNewPassword('');
+      setConfirmNewPassword('');
+    } catch (e: any) {
+      toast.error(e.message || "Failed to update password");
+    } finally {
+      setChangingPassword(false);
+    }
+  };
+
   const filteredProducts = products.filter(p => 
     p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
     p.brand.toLowerCase().includes(searchQuery.toLowerCase())
@@ -279,14 +309,14 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      <div className="mb-8 flex space-x-6 border-b border-white/10 pb-2">
-        {(['products', 'orders', 'admins'] as TabType[]).map(tab => (
+      <div className="mb-8 flex space-x-6 border-b border-white/10 pb-2 overflow-x-auto">
+        {(['products', 'orders', 'admins', 'security'] as TabType[]).map(tab => (
           <button 
             key={tab}
             className={`flex items-center gap-2 px-4 py-2 font-bold uppercase tracking-widest transition-all ${activeTab === tab ? 'text-brand-blue border-b-2 border-brand-blue' : 'text-brand-blue/60 hover:text-brand-blue'}`}
             onClick={() => setActiveTab(tab)}
           >
-            {tab === 'products' ? <Package size={18} /> : tab === 'orders' ? <ShoppingBag size={18} /> : <Users size={18} />}
+            {tab === 'products' ? <Package size={18} /> : tab === 'orders' ? <ShoppingBag size={18} /> : tab === 'admins' ? <Users size={18} /> : <Shield size={18} />}
             {tab}
           </button>
         ))}
@@ -510,6 +540,31 @@ export default function AdminDashboard() {
               </Card>
             ))}
           </div>
+        )}
+
+        {activeTab === 'security' && (
+          <Card className="max-w-md border-brand-blue/30 bg-card/50">
+            <CardHeader>
+              <CardTitle>Change Password</CardTitle>
+              <CardDescription>Update your admin account password securely.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleChangePassword} className="space-y-4">
+                <div className="space-y-2">
+                  <Label>New Password</Label>
+                  <Input type="password" required value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="••••••••" />
+                  <p className="text-xs text-muted-foreground">Minimum 8 characters</p>
+                </div>
+                <div className="space-y-2">
+                  <Label>Confirm New Password</Label>
+                  <Input type="password" required value={confirmNewPassword} onChange={e => setConfirmNewPassword(e.target.value)} placeholder="••••••••" />
+                </div>
+                <Button type="submit" disabled={changingPassword} className="w-full bg-brand-blue font-bold uppercase hover:bg-brand-light">
+                  {changingPassword ? 'Updating...' : 'Update Password'}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
         )}
       </div>
     </div>

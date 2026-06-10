@@ -129,9 +129,6 @@ export default function AdminLogin() {
             >
               Forgot Password?
             </button>
-            <div className="text-muted-foreground">
-              Don't have an admin account? <a href="/admin/setup" className="text-brand-blue hover:underline">Set up here</a>
-            </div>
           </div>
         </CardContent>
       </Card>

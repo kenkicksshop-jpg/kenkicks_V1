@@ -24,6 +24,24 @@ export default async function handler(req: any, res: any) {
     // Create Supabase admin client
     const supabase = createClient(supabaseUrl, serviceRoleKey);
 
+    // SECURITY LOCKDOWN: Check if any admin exists in the system
+    const { data: existingAdmins, error: adminSearchError } = await supabase
+      .from('users')
+      .select('id')
+      .contains('roles', ['admin'])
+      .limit(1);
+
+    if (adminSearchError) {
+      console.error("Admin search error:", adminSearchError);
+      return res.status(500).json({ error: "Failed to verify existing admins" });
+    }
+
+    if (existingAdmins && existingAdmins.length > 0) {
+      return res.status(403).json({ 
+        error: "An admin account already exists. For security reasons, initial setup is locked. To add co-admins, please log into the admin dashboard." 
+      });
+    }
+
     // Create the user
     const { data, error } = await supabase.auth.admin.createUser({
       email,
