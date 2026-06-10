@@ -235,7 +235,7 @@ export default function AdminDashboard() {
     try {
       const { error } = await supabase
         .from('orders')
-        .update({ status: 'Delivered' })
+        .update({ status: 'completed' })
         .eq('id', orderId);
         
       if (error) throw error;
@@ -485,14 +485,14 @@ export default function AdminDashboard() {
               <tbody className="divide-y divide-white/5">
                 {orders.map(order => (
                   <tr key={order.id} className="hover:bg-white/2 transition-colors">
-                    <td className="px-6 py-4 font-mono text-xs font-bold text-white/80">#{order.id.slice(0, 8).toUpperCase()}</td>
+                    <td className="px-6 py-4 font-mono text-xs font-bold text-white/80">#{String(order.id).slice(0, 8).toUpperCase()}</td>
                     <td className="px-6 py-4 font-bold text-brand-blue">Ksh {order.total.toLocaleString()}</td>
                     <td className="px-6 py-4">
                       <span className={`rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-tighter ${
                         (order.status === 'completed' || order.status?.toLowerCase() === 'delivered') ? 'bg-green-500/20 text-green-400' : 
                         order.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-red-500/20 text-red-400'
                       }`}>
-                        {order.status}
+                        {order.status === 'completed' ? 'Delivered' : order.status}
                       </span>
                     </td>
                     <td className="px-6 py-4">
