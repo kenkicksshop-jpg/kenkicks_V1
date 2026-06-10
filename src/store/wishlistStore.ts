@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { Product } from '../types/database';
+import { Product } from '../types';
 
 export interface WishlistItem {
   productId: string;
