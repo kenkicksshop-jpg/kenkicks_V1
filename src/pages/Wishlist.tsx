@@ -34,17 +34,17 @@ export default function Wishlist() {
   return (
     <div className="container mx-auto px-4 py-12">
       <h1 className="mb-8 font-display text-4xl font-bold uppercase tracking-wider">Your Wishlist</h1>
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
+      <div className="grid grid-cols-2 gap-3 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
         {items.map(({ productId, product }) => (
           <Card key={productId} className="group relative overflow-hidden bg-card shadow-md transition-shadow hover:shadow-lg">
             <Link to={`/product/${product.id}`}>
-              <div className="aspect-square bg-muted/30 p-6">
+              <div className="aspect-square bg-muted/30 p-3 sm:p-6">
                 <img src={product.imageUrl} alt={product.name} className="h-full w-full object-contain" />
               </div>
-              <CardContent className="p-4">
-                <div className="mb-1 text-xs font-bold text-brand-blue/60">{product.brand}</div>
-                <h3 className="mb-2 truncate font-bold text-foreground">{product.name}</h3>
-                <div className="font-display text-xl font-bold text-brand-blue">
+              <CardContent className="p-3 sm:p-4">
+                <div className="mb-1 text-[10px] sm:text-xs font-bold text-brand-blue/60">{product.brand}</div>
+                <h3 className="mb-1 sm:mb-2 truncate text-sm sm:text-base font-bold text-foreground">{product.name}</h3>
+                <div className="font-display text-base sm:text-xl font-bold text-brand-blue">
                   Ksh {product.price.toLocaleString()}
                 </div>
               </CardContent>

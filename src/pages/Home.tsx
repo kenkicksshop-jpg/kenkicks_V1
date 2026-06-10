@@ -125,26 +125,28 @@ export default function Home() {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {[...Array(4)].map((_, i) => (
-              <div key={i} className="h-80 animate-pulse rounded-lg bg-muted"></div>
+              <div key={i} className="h-48 sm:h-80 animate-pulse rounded-lg bg-muted"></div>
             ))}
           </div>
         ) : featuredProducts.length > 0 ? (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {featuredProducts.map((product) => (
-              <Card key={product.id} className="overflow-hidden bg-card shadow-md transition-shadow hover:shadow-lg">
-                <div className="aspect-square bg-muted/30 p-6">
-                  <img src={product.imageUrl} alt={product.name} className="h-full w-full object-contain" />
-                </div>
-                <CardContent className="p-4">
-                  <div className="mb-1 text-xs font-bold text-brand-blue/60">{product.brand}</div>
-                  <h3 className="mb-2 truncate font-bold text-foreground">{product.name}</h3>
-                  <div className="font-display text-xl font-bold text-brand-blue">
-                    Ksh {product.price.toLocaleString()}
+              <Link key={product.id} to={`/product/${product.id}`}>
+                <Card className="h-full overflow-hidden bg-card shadow-md transition-shadow hover:shadow-lg">
+                  <div className="aspect-square bg-muted/30 p-3 sm:p-6">
+                    <img src={product.imageUrl} alt={product.name} className="h-full w-full object-contain" />
                   </div>
-                </CardContent>
-              </Card>
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="mb-1 text-[10px] sm:text-xs font-bold text-brand-blue/60">{product.brand}</div>
+                    <h3 className="mb-1 sm:mb-2 truncate text-sm sm:text-base font-bold text-foreground">{product.name}</h3>
+                    <div className="font-display text-base sm:text-xl font-bold text-brand-blue">
+                      Ksh {product.price.toLocaleString()}
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         ) : (

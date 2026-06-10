@@ -95,23 +95,23 @@ export default function Shop() {
       </div>
 
       {loading ? (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {[...Array(8)].map((_, i) => (
-            <div key={i} className="h-80 animate-pulse rounded-lg bg-muted"></div>
+            <div key={i} className="h-48 sm:h-80 animate-pulse rounded-lg bg-muted"></div>
           ))}
         </div>
       ) : products.length > 0 ? (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
+        <div className="grid grid-cols-2 gap-3 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
           {products.map((product) => (
             <Link key={product.id} to={`/product/${product.id}`}>
               <Card className="h-full overflow-hidden bg-card">
-                <div className="aspect-square bg-muted/30 p-6">
+                <div className="aspect-square bg-muted/30 p-3 sm:p-6">
                   <img src={product.imageUrl} alt={product.name} className="h-full w-full object-contain" />
                 </div>
-                <CardContent className="p-4">
-                  <div className="mb-1 text-xs font-bold text-muted-foreground">{product.brand}</div>
-                  <h3 className="mb-2 truncate font-bold">{product.name}</h3>
-                  <div className="font-display text-xl font-bold text-brand-blue">
+                <CardContent className="p-3 sm:p-4">
+                  <div className="mb-1 text-[10px] sm:text-xs font-bold text-muted-foreground">{product.brand}</div>
+                  <h3 className="mb-1 sm:mb-2 truncate text-sm sm:text-base font-bold">{product.name}</h3>
+                  <div className="font-display text-base sm:text-xl font-bold text-brand-blue">
                     Ksh {product.price.toLocaleString()}
                   </div>
                 </CardContent>
