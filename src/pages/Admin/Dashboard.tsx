@@ -485,7 +485,9 @@ export default function AdminDashboard() {
               <tbody className="divide-y divide-white/5">
                 {orders.map(order => (
                   <tr key={order.id} className="hover:bg-white/2 transition-colors">
-                    <td className="px-6 py-4 font-mono text-xs font-bold text-white/80">#{String(order.id).slice(0, 8).toUpperCase()}</td>
+                    <td className="px-6 py-4 font-mono text-sm font-bold text-brand-blue">
+                      ID: {order.id ? String(order.id).split('-')[0].toUpperCase() : 'MISSING'}
+                    </td>
                     <td className="px-6 py-4 font-bold text-brand-blue">Ksh {order.total.toLocaleString()}</td>
                     <td className="px-6 py-4">
                       <span className={`rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-tighter ${
