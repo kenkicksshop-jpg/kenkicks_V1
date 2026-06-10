@@ -51,6 +51,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const { data } = supabase.auth.onAuthStateChange(
         async (event, session) => {
+          if (event === 'PASSWORD_RECOVERY') {
+            window.location.href = '/admin/update-password';
+            return;
+          }
+
           const currentUser = session?.user ?? null;
           setUser(currentUser);
           
