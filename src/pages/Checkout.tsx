@@ -74,7 +74,7 @@ _Please confirm availability and delivery steps._`;
 
       // Order successfully placed in DB. Now redirect to WhatsApp.
       const myPhone = "254792939794";
-      const message = generateWhatsappPrompt(items, total, data.orderId.slice(0, 8).toUpperCase(), formData.name);
+      const message = generateWhatsappPrompt(items, total, String(data.orderId).slice(0, 8).toUpperCase(), formData.name);
       const encodedMessage = encodeURIComponent(message);
       
       // Open WhatsApp in new tab
