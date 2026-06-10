@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase';
 import { Product, Review } from '../types';
 import { useAuth } from '../context/AuthContext';
 import { useCartStore } from '../store/cartStore';
+import { useWishlistStore } from '../store/wishlistStore';
 import { Button } from '../components/ui/button';
 import { Heart, ShoppingBag } from 'lucide-react';
 import { toast } from 'sonner';
@@ -20,6 +21,7 @@ export default function ProductDetails() {
   const [comment, setComment] = useState('');
   const [submittingReview, setSubmittingReview] = useState(false);
   const addItem = useCartStore(state => state.addItem);
+  const { addItem: addWishlistItem, isInWishlist } = useWishlistStore();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -95,30 +97,12 @@ export default function ProductDetails() {
     toast.success("Added to cart");
   };
 
-  const handleAddToWishlist = async () => {
-    if (!user) {
-      return toast.error("Please login to add to wishlist");
-    }
-    try {
-      const { error } = await supabase
-        .from('wishlist_items')
-        .insert({
-          user_id: user.id,
-          product_id: product.id
-        });
-      
-      if (error) {
-        if (error.code === '23505') {
-          toast.success("Already in wishlist!");
-        } else {
-          throw error;
-        }
-      } else {
-        toast.success("Added to wishlist!");
-      }
-    } catch (e) {
-      console.error(e);
-      toast.error("Failed to add to wishlist");
+  const handleAddToWishlist = () => {
+    if (isInWishlist(product.id)) {
+      toast.success("Already in wishlist!");
+    } else {
+      addWishlistItem(product);
+      toast.success("Added to wishlist!");
     }
   };
 

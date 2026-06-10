@@ -30,10 +30,7 @@ export default function App() {
             <Route path="admin/login" element={<AdminLogin />} />
             
             <Route path="checkout" element={<Checkout />} />
-            
-            <Route element={<ProtectedRoute />}>
-              <Route path="wishlist" element={<Wishlist />} />
-            </Route>
+            <Route path="wishlist" element={<Wishlist />} />
 
             <Route element={<ProtectedRoute adminOnly={true} />}>
               <Route path="admin" element={<AdminDashboard />} />
