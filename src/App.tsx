@@ -14,6 +14,7 @@ import Wishlist from './pages/Wishlist';
 import AdminDashboard from './pages/Admin/Dashboard';
 import AdminLogin from './pages/Admin/Login';
 import AdminSetup from './pages/Admin/Setup';
+import UpdatePassword from './pages/Admin/UpdatePassword';
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
             <Route path="cart" element={<Cart />} />
             <Route path="admin/setup" element={<AdminSetup />} />
             <Route path="admin/login" element={<AdminLogin />} />
+            <Route path="admin/update-password" element={<UpdatePassword />} />
             
             <Route path="checkout" element={<Checkout />} />
             <Route path="wishlist" element={<Wishlist />} />
