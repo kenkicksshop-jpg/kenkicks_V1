@@ -17,9 +17,9 @@ export function Footer() {
             <h4 className="mb-4 font-semibold uppercase">Shop</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li><Link to="/shop" className="hover:text-primary">All Sneakers</Link></li>
-              <li><Link to="/shop?brand=Nike" className="hover:text-primary">Nike</Link></li>
-              <li><Link to="/shop?brand=Adidas" className="hover:text-primary">Adidas</Link></li>
-              <li><Link to="/shop?brand=Jordan" className="hover:text-primary">Jordan</Link></li>
+              <li><Link to="/shop?brand=Nike" className="hover:text-primary"></Link></li>
+              <li><Link to="/shop?brand=Adidas" className="hover:text-primary"></Link></li>
+              <li><Link to="/shop?brand=Jordan" className="hover:text-primary"></Link></li>
             </ul>
           </div>
           <div>
