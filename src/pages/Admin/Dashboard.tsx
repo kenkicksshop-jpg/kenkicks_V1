@@ -225,16 +225,15 @@ export default function AdminDashboard() {
     }
   };
 
-  const toggleOrderStatus = async (orderId: string, currentStatus: string) => {
-    const newStatus = currentStatus === 'pending' ? 'completed' : 'pending';
+  const markOrderDelivered = async (orderId: string) => {
     try {
       const { error } = await supabase
         .from('orders')
-        .update({ status: newStatus })
+        .update({ status: 'Delivered' })
         .eq('id', orderId);
         
       if (error) throw error;
-      toast.success(`Order status updated to ${newStatus}`);
+      toast.success(`Order marked as Delivered`);
       fetchOrders();
     } catch (e: any) {
       toast.error(e.message || "Failed to update order status");
@@ -460,7 +459,7 @@ export default function AdminDashboard() {
                     <td className="px-6 py-4 font-bold text-brand-blue">Ksh {order.total.toLocaleString()}</td>
                     <td className="px-6 py-4">
                       <span className={`rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-tighter ${
-                        order.status === 'completed' ? 'bg-green-500/20 text-green-400' : 
+                        (order.status === 'completed' || order.status?.toLowerCase() === 'delivered') ? 'bg-green-500/20 text-green-400' : 
                         order.status === 'pending' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-red-500/20 text-red-400'
                       }`}>
                         {order.status}
@@ -474,10 +473,11 @@ export default function AdminDashboard() {
                     <td className="px-6 py-4">
                       <Button 
                         size="sm" 
-                        className="h-8 bg-brand-blue hover:bg-brand-light"
-                        onClick={() => toggleOrderStatus(order.id, order.status)}
+                        className="h-8 bg-brand-blue hover:bg-brand-light disabled:opacity-50"
+                        onClick={() => markOrderDelivered(order.id)}
+                        disabled={order.status === 'completed' || order.status?.toLowerCase() === 'delivered'}
                       >
-                        {order.status === 'pending' ? 'Mark Completed' : 'Mark Pending'}
+                        Mark Complete
                       </Button>
                     </td>
                   </tr>
